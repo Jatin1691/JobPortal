@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto registerUser(UserDto userDto) throws JobPortalException {
+        userDto.setId(Utilities.getNextseq("users"));
         Optional<User> optional=userRepository.findByEmail(userDto.getEmail());
         if(optional.isPresent()) {
             throw new JobPortalException("Email already Exist");
@@ -53,6 +54,11 @@ public class UserServiceImpl implements UserService {
         User user=userDto.toEntity();
         userRepository.save(user);
         return user.toDto();
+    }
+
+    @Override
+    public UserDto getUserByEmail(String email) throws JobPortalException {
+        return userRepository.findByEmail(email).orElseThrow(()->new JobPortalException("User not found with this email")).toDto();
     }
 
     @Override

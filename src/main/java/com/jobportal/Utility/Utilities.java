@@ -20,7 +20,7 @@ public class Utilities {
 
     @Autowired
     public void setMongoOperations(MongoOperations mongoOperations) {
-        this.mongoOperations = mongoOperations;
+        Utilities.mongoOperations = mongoOperations;
     }
 
     public static Long getNextseq(String key) throws JobPortalException {
@@ -29,7 +29,7 @@ public class Utilities {
         update.inc("seq", 1);
         FindAndModifyOptions options=new FindAndModifyOptions();
         options.returnNew(true);
-        Sequence sequence=mongoOperations.findAndModify(query,update,options, com.jobportal.Model.Sequence.class);
+        Sequence sequence=mongoOperations.findAndModify(query,update,options, Sequence.class);
         if(sequence==null){
             throw new JobPortalException("unable to get the sequence id for key: "+key);
         }
